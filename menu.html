@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Меню | Ресторан "Chester"</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Шапка -->
+    <header>
+        <div class="logo">Chester</div>
+
+        <!-- Бургер -->
+        <div class="burger" id="burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <!-- Меню -->
+        <nav id="menu">
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="menu.html" class="active">Меню</a></li>
+                <li><a href="about.html">О нас</a></li>
+                <li><a href="contacts.html">Контакты</a></li>
+                <li><a href="cart.html">
+                    Корзина (<span id="cart-counter">0</span>)
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="address">
+        <h1>В какой ресторан вы хотите заказать?</h1>
+        <div class="custom-select">
+            <label for="rest-select">Ресторан</label>
+            <select name="rest" id="rest-select">
+                <option value="">-- Выберите адрес --</option>
+                <option value="tishinka">Тишинка д.17</option>
+                <option value="sretenka">Сретенка д.26</option>
+                <option value="gryazemut">Гряземуть д.5</option>
+                <option value="prospekt">Проспект Мира д.122</option>
+            </select>
+        </div>
+        <p id="result"></p>
+    </section>
+
+    <section class="test-buttons">
+        <h1>Это просто тест для кнопок</h1>
+        <div class="button-container">
+            <button class="test-btn1">Пицца</button>
+            <button class="test-btn2">Шаурма</button>
+            <button class="test-btn3">Шейк</button>
+            <button class="test-btn4">Десерт</button>
+        </div>
+
+    </section>
+    <section class ="Vote-Poll">
+        <h1>Пройдите голосование за новые блюда!</h1>
+        <p>Ваш голос решит, какое блюдо попадёт в меню,
+            а какое нет.
+        </p>
+        <section class="test-buttons">
+        <button class="test-btn3"><a href="likes.html">Голосование</a></button>
+        </section>
+    </section>
+
+    <!-- Заголовок -->
+    <section class="hero small-hero">
+        <h1>Меню ресторана</h1>
+        <p>Выберите блюдо по вкусу</p>
+    </section>
+
+    <!-- Фильтры -->>
+    <section class="filter-box">
+    <h2>Фильтр блюд</h2>
+
+    <div class="filter-row">
+        <label>Цена от:</label>
+        <input type="number" id="price-min" placeholder="0">
+    </div>
+
+    <div class="filter-row">
+        <label>Цена до:</label>
+        <input type="number" id="price-max" placeholder="9999">
+    </div>
+
+    <div class="filter-row">
+        <label>Сортировка:</label>
+        <select id="sort-select">
+            <option value="none">Без сортировки</option>
+            <option value="asc">По возрастанию</option>
+            <option value="desc">По убыванию</option>
+        </select>
+    </div>
+
+    <button id="apply-filter">Применить</button>
+</section>
+
+
+    <!-- Меню -->
+    <section class="menu">
+        <h2>Закуски</h2>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <img src="bruschetta.jpg" alt="Брускетта">
+                <h3>Брускетта</h3>
+                <p>Хрустящий хлеб с томатами, базиликом и оливковым маслом.</p>
+                <span class="price">350 ₽</span>
+                <button class="add-to-cart"
+                        data-name="Брускетта"
+                        data-price="350"
+                        data-image="bruschetta.jpg">
+                    Добавить в корзину
+                </button>
+
+            </div>
+            <div class="menu-item">
+                <img src="salad.jpg" alt="Салат Цезарь">
+                <h3>Салат Цезарь</h3>
+                <p>Курица, сухарики, сыр пармезан и фирменный соус.</p>
+                <span class="price">420 ₽</span>
+                                <button class="add-to-cart"
+                        data-name="Салат"
+                        data-price="420"
+                        data-image="salad.jpg">
+                    Добавить в корзину
+                </button>
+            </div>
+        </div>
+
+        <h2>Горячее</h2>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <img src="pizza.jpg" alt="Пицца Маргарита">
+                <h3>Пицца Маргарита</h3>
+                <p>Тонкое тесто, соус, сыр моцарелла и свежие томаты.</p>
+                <span class="price">590 ₽</span>
+                                <button class="add-to-cart"
+                        data-name="Пицца Маргарита"
+                        data-price="590"
+                        data-image="pizza.jpg">
+                    Добавить в корзину
+                </button>
+            </div>
+            <div class="menu-item">
+                <img src="pasta.jpg" alt="Паста Карбонара">
+                <h3>Паста Карбонара</h3>
+                <p>Спагетти с беконом, сливочным соусом и пармезаном.</p>
+                <span class="price">640 ₽</span>
+                                <button class="add-to-cart"
+                        data-name="Паста Карбонара"
+                        data-price="640"
+                        data-image="pasta.jpg">
+                    Добавить в корзину
+                </button>
+            </div>
+        </div>
+
+        <h2>Десерты</h2>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <img src="tiramisu.jpg" alt="Тирамису">
+                <h3>Тирамису</h3>
+                <p>Итальянский десерт с кофе, маскарпоне и какао.</p>
+                <span class="price">370 ₽</span>
+                                <button class="add-to-cart"
+                        data-name="Тирамису"
+                        data-price="370"
+                        data-image="tiramisu.jpg">
+                    Добавить в корзину
+                </button>
+            </div>
+            <div class="menu-item">
+                <img src="cheesecake.jpg" alt="Чизкейк">
+                <h3>Чизкейк</h3>
+                <p>Нежный сливочный десерт с основой из печенья.</p>
+                <span class="price">390 ₽</span>
+                                <button class="add-to-cart"
+                        data-name="Чизкейк"
+                        data-price="390"
+                        data-image="cheesecake.jpg">
+                    Добавить в корзину
+                </button>
+            </div>
+        </div>
+
+        <h2>Напитки</h2>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <img src="capuchino.jpg" alt="Капучино">
+                <h3>Капучино</h3>
+                <p>Ароматный кофе с молочной пенкой.</p>
+                <span class="price">220 ₽</span>
+                                <button class="add-to-cart"
+                        data-name="Капучино"
+                        data-price="220"
+                        data-image="capuchino.jpg">
+                    Добавить в корзину
+                </button>
+            </div>
+            <div class="menu-item">
+                <img src="wine.jpg" alt="Вино">
+                <h3>Красное вино</h3>
+                <p>Итальянское вино из региона Тоскана.</p>
+                <span class="price">490 ₽</span>
+                                <button class="add-to-cart"
+                        data-name="Вино"
+                        data-price="490"
+                        data-image="wine.jpg">
+                    Добавить в корзину
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Подвал -->
+    <footer>
+        <p>&copy; 2025 Ресторан "Chester". Все права защищены.</p>
+    </footer>
+
+    <!-- Скрипт бургер-меню -->
+    <script>
+        const burger = document.getElementById('burger');
+        const menu = document.getElementById('menu');
+
+        burger.addEventListener('click', () => {
+            burger.classList.toggle('active');
+            menu.classList.toggle('active');
+        });
+
+        // Закрытие меню при клике на пункт
+        document.querySelectorAll('#menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                burger.classList.remove('active');
+                menu.classList.remove('active');
+            });
+        });
+    </script>
+    <script>
+// ==== КОРЗИНА ====
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// Сохранить корзину
+function saveCart() {
+    localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+// Добавить товар
+function addToCart(item) {
+    // Проверяем, есть ли уже товар
+    let found = cart.find(x => x.name === item.name);
+
+    if (found) {
+        found.qty++;
+    } else {
+        cart.push({...item, qty: 1});
+    }
+    saveCart();
+}
+
+function truncate(str, maxlength) {
+  if (str.length <= maxlength) {
+    return str;
+  }
+  return str.slice(0, maxlength - 1) + "…";
+}
+
+function truncateDescriptions(maxlength) {
+  document.querySelectorAll('.menu-item p').forEach(paragraph => {
+    paragraph.textContent = truncate(paragraph.textContent, maxlength);
+  });
+}
+    
+truncateDescriptions(100)
+
+
+// ==== АНИМАЦИЯ ПОЛЁТА ====
+function flyAnimation(imgElem) {
+    let img = imgElem.cloneNode(true);
+    img.style.position = "fixed";
+    img.style.zIndex = 9999;
+    img.style.transition = "1s cubic-bezier(.17,.67,.3,1.3)";
+    img.style.width = "120px";
+    img.style.borderRadius = "12px";
+
+    let rect = imgElem.getBoundingClientRect();
+    img.style.left = rect.left + "px";
+    img.style.top = rect.top + "px";
+
+    document.body.appendChild(img);
+
+    // Ищем координаты корзины
+    let cartLink = document.querySelector('a[href="cart.html"]').getBoundingClientRect();
+
+    setTimeout(() => {
+        img.style.left = cartLink.left + "px";
+        img.style.top = cartLink.top + "px";
+        img.style.width = "30px";
+        img.style.opacity = "0.2";
+    }, 30);
+
+    setTimeout(() => img.remove(), 900);
+}
+
+
+// ==== ОБРАБОТКА КНОПОК ====
+document.querySelectorAll(".add-to-cart").forEach(btn => {
+    btn.addEventListener("click", () => {
+
+        const item = {
+            name: btn.dataset.name,
+            price: Number(btn.dataset.price),
+            image: btn.dataset.image
+        };
+
+        // Добавляем в корзину
+        addToCart(item);
+
+        // Увеличиваем счётчик Accumulator
+        acc.read(1);
+
+        // Стартуем анимацию полёта
+        let cardImg = btn.parentElement.querySelector("img");
+        flyAnimation(cardImg);
+    });
+});
+
+// ==== КОРЗИНА ====
+function Accumulator(startingValue) {
+    this.value = startingValue;
+
+    this.read = function (amount) {
+        this.value += amount;
+        updateCartCounter();
+    };
+
+    this.remove = function(amount) {
+        this.value = Math.max(0, this.value - amount);
+        updateCartCounter();
+    };
+}
+//!!!!!!!!!!!!!!!! НЕ РАБОТАЕТ СОРТИРОВКА ПО ВОЗРАСТАНИЮ/УБЫВАНИЮ
+// Создаём счётчик, загружаем из localStorage
+let acc = new Accumulator(Number(localStorage.getItem("cartCount")) || 0);
+
+// обновление отображения
+function updateCartCounter() {
+    localStorage.setItem("cartCount", acc.value);
+    document.getElementById("cart-counter").textContent = acc.value;
+}
+
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // собираем карточки (свежая сборка на момент вызова)
+  const allItems = Array.from(document.querySelectorAll('.menu-item')).map(elem => {
+    const priceText = elem.querySelector('.price')?.textContent || '';
+    // извлекаем число из текста цены, например "590 ₽"
+    const price = Number(priceText.replace(/\D/g, '')) || 0;
+    return { elem, name: elem.querySelector('h3')?.textContent || '', price };
+  });
+
+  // вспомогательная функция: привязать add-to-cart к кнопке внутри переданного элемента (elem может быть оригинал или клон)
+  function bindAddToCartOnElement(elem) {
+    const btn = elem.querySelector('.add-to-cart');
+    if (!btn) return;
+    // удаляем потенциальные старые обработчики, затем навешиваем новый.
+    // Удалять точные слушатели сложно; мы переходим по другому: клонирование не переносит слушатели, но если вдруг — перестрахуемся.
+    btn.replaceWith(btn.cloneNode(true));
+    const newBtn = elem.querySelector('.add-to-cart');
+    newBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const item = {
+        name: newBtn.dataset.name,
+        price: Number(newBtn.dataset.price),
+        image: newBtn.dataset.image
+      };
+      addToCart(item);
+      // анимация — используем картинку внутри той же карточки (elem)
+      const img = elem.querySelector('img');
+      if (img) flyAnimation(img);
+      // обновляем acc и т.д. (если acc есть в глобальной области)
+      if (typeof acc !== 'undefined') acc.read(1);
+    });
+  }
+
+  // функция фильтра/сортировки
+  function filterAndSortMenu() {
+    const min = Number(document.getElementById('price-min').value) || 0;
+    const max = Number(document.getElementById('price-max').value);
+    const maxVal = isFinite(max) && max > 0 ? max : Infinity;
+    const sort = document.getElementById('sort-select').value;
+
+    // определим, нужен ли вообще фильтр/сортировка
+    const noFilter = (min === 0 && maxVal === Infinity && (sort === 'none' || !sort));
+    const menuSection = document.querySelector('.menu');
+
+    // если нет фильтра — восстановим исходные сетки и удалим результаты
+    if (noFilter) {
+      // покажем исходные сетки
+      document.querySelectorAll('.menu-grid').forEach(g => g.style.display = '');
+      const existing = document.getElementById('filter-results-container');
+      if (existing) existing.remove();
+      return;
+    }
+
+    // фильтрация
+    let filtered = allItems.filter(item => item.price >= min && item.price <= maxVal);
+
+    // сортировка
+    if (sort === 'asc') filtered.sort((a, b) => a.price - b.price);
+    if (sort === 'desc') filtered.sort((a, b) => b.price - a.price);
+
+    // скрываем исходные сетки, чтобы не было дубликатов
+    document.querySelectorAll('.menu-grid').forEach(g => g.style.display = 'none');
+
+    // создаём или находим контейнер результатов
+    let resultsContainer = document.getElementById('filter-results-container');
+    if (!resultsContainer) {
+      resultsContainer = document.createElement('div');
+      resultsContainer.id = 'filter-results-container';
+      resultsContainer.className = 'menu-grid';
+      // вставляем контейнер в начало секции .menu (после заголовка)
+      const menuHeader = menuSection.querySelector('h2');
+      if (menuHeader && menuHeader.parentElement) {
+        menuSection.insertBefore(resultsContainer, menuHeader.nextElementSibling);
+      } else {
+        menuSection.insertBefore(resultsContainer, menuSection.firstChild);
+      }
+    } else {
+      resultsContainer.innerHTML = '';
+    }
+
+    if (filtered.length === 0) {
+      resultsContainer.innerHTML = '<p style="padding:20px; color:#666">Ничего не найдено по заданным критериям.</p>';
+      return;
+    }
+
+    // добавляем карточки-клоны в resultsContainer в нужном порядке
+    filtered.forEach(item => {
+      const clone = item.elem.cloneNode(true);
+
+      // опционально: можно пометить клон, чтобы избежать дублей
+      clone.classList.add('filtered-clone');
+
+      // привязываем обработчик add-to-cart к клону
+      bindAddToCartOnElement(clone);
+
+      // добавляем в контейнер
+      resultsContainer.appendChild(clone);
+    });
+  }
+
+  // навешиваем кнопку
+  const applyBtn = document.getElementById('apply-filter');
+  if (applyBtn) applyBtn.addEventListener('click', filterAndSortMenu);
+
+  // (опционально) — применяем при нажатии Enter в полях
+  document.getElementById('price-min').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') filterAndSortMenu();
+  });
+  document.getElementById('price-max').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') filterAndSortMenu();
+  });
+
+}); // DOMContentLoaded
+</script>
+
+
+</body>
+</html>

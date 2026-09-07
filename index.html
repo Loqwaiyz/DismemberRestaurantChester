@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ресторан "Chester"</title>
+    <link rel="icon" href="favicon.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+
+<script>
+// ЗАДАНИЕ 1: Регистрация
+if (confirm("Желаете пройти регистрацию на сайте?")) {
+    alert("Круто!");
+} else {
+    alert("Попробуй ещё раз.");
+}
+</script>
+
+<script>
+// ЗАДАНИЕ 2: Логин и пароль через prompt
+
+let login = prompt("Введите логин:");
+
+if (login === null || login === "") {
+    alert("Отменено");
+} else if (login === "Админ") {
+
+    let pass = prompt("Введите пароль:");
+
+    if (pass === null || pass === "") {
+        alert("Отменено");
+    } else if (pass === "Я главный") {
+        alert("Здравствуйте!");
+    } else {
+        alert("Неверный пароль");
+    }
+
+} else {
+    alert("Я вас не знаю");
+}
+</script>
+
+<!-- CAPTCHA -->
+<div id="captchaWrap" style="max-width:440px">
+  <div id="captchaBox" style="margin-bottom:8px; font-weight:600;"></div>
+
+  <input id="captchaInput" type="text" placeholder="Введите капчу" autocomplete="off"
+         style="padding:8px 10px; width:100%; box-sizing:border-box; margin-bottom:8px;" />
+
+  <div style="display:flex; gap:8px; align-items:center">
+    <button id="checkBtn" type="button" style="padding:8px 12px">Проверить</button>
+    <button id="sendBtn" disabled type="button" style="padding:8px 12px">Отправить</button>
+    <button id="refreshBtn" type="button" style="padding:8px 12px">Обновить капчу</button>
+  </div>
+
+  <div id="error" style="color:#b00020; margin-top:10px; min-height:1.2em;"></div>
+</div>
+
+<script>
+/* утилита: возвращает true, если объект пустой */
+function isEmpty(obj) {
+  for (let k in obj) return false;
+  return true;
+}
+
+/* Элементы */
+const captchaBox = document.getElementById('captchaBox');
+const input = document.getElementById('captchaInput');
+const checkBtn = document.getElementById('checkBtn');
+const sendBtn = document.getElementById('sendBtn');
+const refreshBtn = document.getElementById('refreshBtn');
+const errorDiv = document.getElementById('error');
+
+let currentCaptcha = '';
+let mode = 'letters'; // 'letters' или 'math'
+
+/* Генерация буквенной капчи (смешанный регистр, без похожих символов) */
+function generateLettersCaptcha(len = 5) {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz';
+  let s = '';
+  for (let i = 0; i < len; i++) {
+    s += chars[Math.floor(Math.random() * chars.length)];
+  }
+  currentCaptcha = s;
+  mode = 'letters';
+  captchaBox.textContent = `Введите символы (учёт регистра): ${s}`;
+  input.value = '';
+  errorDiv.textContent = '';
+  sendBtn.disabled = true;
+  input.focus();
+}
+
+/* Генерация математической капчи: N + M */
+function generateMathCaptcha() {
+  const a = Math.floor(Math.random() * 9) + 1; // 1..9
+  const b = Math.floor(Math.random() * 9) + 1;
+  currentCaptcha = String(a + b); // ответ в виде строки
+  mode = 'math';
+  captchaBox.textContent = `Решите пример: ${a} + ${b} = ?`;
+  input.value = '';
+  errorDiv.textContent = '';
+  sendBtn.disabled = true;
+  input.focus();
+}
+
+/* обновить капчу (по умолчанию - буквенная) */
+function refreshCaptcha() {
+  generateLettersCaptcha();
+}
+
+/* Проверка ввода.
+   Для букв: проверяем только если длина ввода === длине капчи (чтобы не ругаться по первому символу).
+   Для числовой: можно проверять при любом вводе, но лучше при нажатии "Проверить" или когда строка не пустая.
+*/
+function validateInputTry() {
+  const val = input.value.trim();
+
+  // защита: пустой ввод
+  if (val === '') {
+    errorDiv.textContent = '';
+    sendBtn.disabled = true;
+    return;
+  }
+
+  if (mode === 'letters') {
+    // сравнение строгое, с учётом регистра
+    if (val.length < currentCaptcha.length) {
+      errorDiv.textContent = '';
+      sendBtn.disabled = true;
+      return;
+    }
+
+    if (val === currentCaptcha) {
+      errorDiv.style.color = 'green';
+      errorDiv.textContent = 'Капча введена верно — можно отправлять.';
+      sendBtn.disabled = false;
+    } else {
+      // неверно — переключаем на математическую капчу
+      errorDiv.style.color = '#b00020';
+      errorDiv.textContent = 'Неверно! Переходим к математической капче...';
+      sendBtn.disabled = true;
+
+      // небольшая пауза — чтобы пользователь увидел сообщение, затем сменим капчу
+      setTimeout(() => {
+        generateMathCaptcha();
+      }, 900);
+    }
+  } else if (mode === 'math') {
+    // для math: сравнить численно (позволяем вводить пробелы)
+    if (val === currentCaptcha) {
+      errorDiv.style.color = 'green';
+      errorDiv.textContent = 'Капча пройдена — можно отправлять.';
+      sendBtn.disabled = false;
+    } else {
+      errorDiv.style.color = '#b00020';
+      errorDiv.textContent = 'Неверный ответ. Попробуйте снова или обновите капчу.';
+      sendBtn.disabled = true;
+      // не переключаем обратно автоматически — даём шанс попробовать ещё раз
+    }
+  }
+}
+
+/* Обработчики */
+input.addEventListener('input', () => {
+  // при вводе не валидируем немедленно, только вызываем "предпроверку" (validateInputTry)
+  validateInputTry();
+});
+
+input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    // нажали Enter — проверьте сейчас
+    e.preventDefault();
+    validateInputTry();
+  }
+});
+
+checkBtn.addEventListener('click', () => {
+  validateInputTry();
+});
+
+refreshBtn.addEventListener('click', () => {
+  refreshCaptcha();
+});
+
+/* Пример "отправки" */
+sendBtn.addEventListener('click', () => {
+  alert('Форма отправлена');
+  // после отправки можно обновить капчу
+  generateLettersCaptcha();
+});
+
+/* Инициализация первой капчи */
+generateLettersCaptcha();
+</script>
+
+
+<body>
+    <!-- Шапка сайта -->
+    <header>
+        <div class="logo">Chester</div>
+
+        <!-- Бургер -->
+        <div class="burger" id="burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <!-- Меню -->
+        <nav id="menu">
+            <ul>
+                <li><a href="index.html" class="active">Главная</a></li>
+                <li><a href="menu.html">Меню</a></li>
+                <li><a href="about.html">О нас</a></li>
+                <li><a href="contacts.html">Контакты</a></li>
+                <li><a href="cart.html">Корзина</a></li>
+            </ul>
+        </nav>
+        <div class="notifications-info">
+          <button id="notify-btn" class="notify-btn">Пауза уведомлений</button>
+          <div class="notify-count-box">
+            Уведомлений: <span id="notify-count">0</span>
+          </div>
+        </div>
+
+        <div id="notifications-list"></div>
+
+    </header>
+
+    <!-- Главный баннер -->
+    <section class="hero">
+        <h1>Добро пожаловать в ресторан "Chester"</h1>
+        <p>Настоящая итальянская кухня в сердце города</p>
+        <a href="menu.html" class="btn">Посмотреть меню</a>
+    </section>
+
+    <!-- О ресторане -->
+    <section class="about">
+        <h2>О нашем ресторане</h2>
+        <p>
+            В "Chester" мы готовим блюда с разных уголков Италии.
+        </p>
+    </section>
+
+    <!-- Популярные блюда -->
+    <section class="popular">
+        <h2>Попробуйте наши хиты</h2>
+        <div class="cards">
+            <div class="card">
+                <img src="pizza.jpg" alt="Пицца Маргарита">
+                <h3>Пицца Маргарита</h3>
+            </div>
+            <div class="card">
+                <img src="shayrma.jpg" alt="Шаурма">
+                <h3>Шаурма</h3>
+            </div>
+            <div class="card">
+                <img src="shake2.jpg" alt="Орео Шейк">
+                <h3>Орео Шейк</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Подвал -->
+    <footer>
+        <p>&copy; 2025 Ресторан "Chester". Все права защищены.</p>
+    </footer>
+
+    <!-- Скрипт бургер-меню -->
+    <script>
+        const burger = document.getElementById('burger');
+        const menu = document.getElementById('menu');
+
+        burger.addEventListener('click', () => {
+            burger.classList.toggle('active');
+            menu.classList.toggle('active');
+        });
+
+        // Закрытие меню при клике на пункт (на мобильных)
+        document.querySelectorAll('#menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                burger.classList.remove('active');
+                menu.classList.remove('active');
+            });
+        });
+    </script>
+<script>
+// ЗАДАНИЕ 3: Логика уведомлений
+// =============================
+let notifyCount = 0;
+let intervalId;
+const PAUSE_DURATION = 10000; // 10 секунд в миллисекундах (10000 = 10 сек)
+
+// Получаем элементы
+const notifyCountEl = document.getElementById("notify-count");
+const notifyBtn = document.getElementById("notify-btn");
+const notificationsBox = document.getElementById("notifications-list");
+
+
+// 1. Функция добавления уведомления
+function showNotification(text) {
+    if (!notificationsBox) return;
+
+    const elem = document.createElement("div");
+    elem.className = "notification-item"; // Вам нужно будет добавить стили для этого класса
+    elem.textContent = text;
+
+    // Вставляем новое уведомление в начало списка
+    notificationsBox.prepend(elem);
+
+    // Исчезает через 1.5 сек
+    setTimeout(() => elem.remove(), 1500);
+}
+
+
+// 2. Старт авто-уведомлений каждые 3 секунды
+function startNotifications() {
+    // На всякий случай останавливаем предыдущий интервал
+    clearInterval(intervalId); 
+    
+    // Запускаем новый интервал
+    intervalId = setInterval(() => {
+        notifyCount++;
+        if (notifyCountEl) notifyCountEl.textContent = notifyCount;
+        showNotification("Новое уведомление #" + notifyCount);
+    }, 3000);
+
+    if (notifyBtn) notifyBtn.textContent = "Пауза уведомлений";
+}
+
+
+// 3. Логика кнопки "Пауза уведомлений"
+if (notifyBtn) {
+    notifyBtn.addEventListener("click", () => {
+        // Останавливаем текущий интервал
+        clearInterval(intervalId);
+        
+        // Показываем уведомление о паузе
+        showNotification(`Уведомления приостановлены на ${PAUSE_DURATION / 1000} секунд`);
+
+        // Меняем текст кнопки и блокируем ее
+        notifyBtn.textContent = "Пауза (10 сек)";
+        notifyBtn.disabled = true;
+
+        // Устанавливаем таймер для возобновления
+        setTimeout(() => {
+            notifyBtn.disabled = false;
+            startNotifications(); // Начинаем заново
+            showNotification("Уведомления возобновлены!");
+        }, PAUSE_DURATION);
+    });
+}
+
+
+// Запускаем уведомления при загрузке страницы
+startNotifications();
+</script>
+
+<script>
+// контейнер
+const notifList = document.getElementById("notifications-list");
+
+// делегирование событий (один обработчик)
+notifList.addEventListener("click", (e) => {
+    if (e.target.classList.contains("notif-close")) {
+        e.target.parentElement.remove();
+        updateNotifCounter();
+    }
+});
+
+// функция добавления уведомлений
+function addNotification(text) {
+    const div = document.createElement("div");
+    div.className = "notif-item";
+    div.innerHTML = `${text} <span class="notif-close">✖</span>`;
+    notifList.appendChild(div);
+    updateNotifCounter();
+}
+
+// обновить счетчик
+function updateNotifCounter() {
+    document.getElementById("notify-count").textContent =
+        notifList.children.length;
+}
+
+// тест — появление новых уведомлений каждые 3 сек
+setInterval(() => {
+    addNotification("Новое уведомление " + Date.now().toString().slice(-4));
+}, 3000);
+</script>
+
+
+</body>
+</html>

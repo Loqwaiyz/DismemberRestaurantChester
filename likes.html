@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Избранное</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="likes-container">
+    <div class="likes-title">Избранные блюда</div>
+
+    <div class="vote-message" id="voteMessage">Ваш голос засчитан!</div>
+
+    <a href="menu.html">Вернуться в меню</a>
+
+    <div class="likes-grid" id="likesGrid">
+
+        <div class="like-card">
+            <img src="arrabiata.jpg" alt="">
+            <div class="heart">♡</div>
+            <div class="like-content">
+                <h3>Паста Аррабьята</h3>
+                <p>Классическая итальянская паста, приготовленная по фирменному рецепту.</p>
+            </div>
+        </div>
+
+        <div class="like-card">
+            <img src="steak.jpg" alt="">
+            <div class="heart">♡</div>
+            <div class="like-content">
+                <h3>Стейк Мачете</h3>
+                <p>Сочный мраморный стейк средней прожарки с розмарином и чесноком.</p>
+            </div>
+        </div>
+
+        <div class="like-card">
+            <img src="salad.jpg" alt="">
+            <div class="heart">♡</div>
+            <div class="like-content">
+                <h3>Цезарь с курицей</h3>
+                <p>Хрустящие листья салата, тёплая курочка и классический соус.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const hearts = document.querySelectorAll(".heart");
+    const grid = document.getElementById("likesGrid");
+    const voteMessage = document.getElementById("voteMessage");
+
+    hearts.forEach(heart => {
+        heart.addEventListener("click", () => {
+
+            // Если уже лайкнуто — не даём повторно менять
+            if (heart.classList.contains("liked")) return;
+
+            // Красное сердечко
+            heart.classList.add("liked");
+            heart.textContent = "❤️";
+
+            // Оставляем только лайкнутую карточку
+            const card = heart.closest(".like-card");
+
+            const allCards = document.querySelectorAll(".like-card");
+            allCards.forEach(c => {
+                if (c !== card) {
+                    c.style.display = "none";
+                } else {
+                    c.style.transform = "scale(1.05)";
+                }
+            });
+
+            // Показываем сообщение
+            voteMessage.style.display = "block";
+        });
+    });
+</script>
+
+</body>
+</html>
